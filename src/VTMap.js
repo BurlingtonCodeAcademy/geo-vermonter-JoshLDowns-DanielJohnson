@@ -27,7 +27,7 @@ class VTMap extends React.Component {
     }
 
     render() {
-        console.log(this.state.mapCoords)
+        //console.log(this.state.mapCoords)
         let myLine = this.state.mapCoords.length > 1 ?<Polyline color="blue" positions={this.state.mapCoords} /> : null
         return (
             <Map center={[this.props.lat, this.props.lon]} zoom={this.props.zoom} zoomControl={false} scrollWheelZoom={false} touchZoom={false} doubleClickZoom={false}>

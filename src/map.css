@@ -28,6 +28,24 @@
     background-color: rgb(71, 0, 71);
 }
 
+#main-map-container {
+    position: relative;
+}
+
+#guess-list {
+    height: 465px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-family: squada one;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0px;
+    z-index: 1000;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #map-score-control {
     display: flex;
     flex-direction: column;
