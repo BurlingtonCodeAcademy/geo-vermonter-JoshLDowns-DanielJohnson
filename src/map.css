@@ -56,19 +56,91 @@
 #map-score-control {
     display: flex;
     flex-direction: column;
-    width: 200px;
-    height: 550px;
-    background-color: aquamarine;
+    justify-content: space-evenly;
+    width: 190px;
+    height: 540px;
+    background-color: rgb(71, 0, 71);
+    border: 5px solid black;
+}
+
+#score-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+}
+
+#score {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-family: Squada One;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    border-bottom: 5px solid black;
+    color: rgb(255, 140, 255);
+    text-shadow: -2px 0 2px black, 0 2px 2px black, 2px 0 2px black, 0 -2px 2px black
 }
 
 #mapWrapper {
-    width: 200px;
+    width: 190px;
     height: 300px;
+    padding-top: 20px;
 }
 
 #county-map {
-    width: 125px;
-    height: 200px;
+    width: Calc(100% - 20px);
+    height: auto;
+    margin-left: 10px;
+}
+
+#north-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#east-west-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+#south-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.direction-button {
+    font-family: Squada One;
+    font-size: 1.5rem;
+    border: 2px solid rgb(255, 140, 255);;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+}
+
+.direction-button:hover {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.direction-button:disabled {
+    filter: invert(.75);
+}
+
+#status-bar {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    border-top: 5px solid black;
+    margin-top: 15px;
+}
+
+#status {
+    font-family: Squada One;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    color: rgb(255, 140, 255);
+    text-shadow: -2px 0 2px black, 0 2px 2px black, 2px 0 2px black, 0 -2px 2px black
 }
 
 .leaflet-container {
