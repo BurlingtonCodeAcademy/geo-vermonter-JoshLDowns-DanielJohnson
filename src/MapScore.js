@@ -11,10 +11,12 @@ class MapScore extends React.Component {
 
     render () {
         return (
-            <div>
+            <div id="score-wrapper">
                 <div id='score'>
                     <p>Current Score: {this.props.score}</p>
                 </div>
+            
+                
                 <div id='mapWrapper'>
                     <img id='county-map' src={counties} />
                 </div>
