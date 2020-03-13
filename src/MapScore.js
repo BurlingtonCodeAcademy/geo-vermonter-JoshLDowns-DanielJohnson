@@ -1,5 +1,5 @@
 import React from 'react'
-import vermontCounties from './vermontCounties.gif'
+import counties from './counties.png'
 
 class MapScore extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class MapScore extends React.Component {
                     <p>Current Score: </p>
                 </div>
                 <div id='mapWrapper'>
-                    <img id='county-map' src={vermontCounties} />
+                    <img id='county-map' src={counties} />
                 </div>
             </div>
         )
