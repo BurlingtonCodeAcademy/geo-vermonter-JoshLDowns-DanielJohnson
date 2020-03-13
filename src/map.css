@@ -1,4 +1,80 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Squada+One&display=swap');
+
+#body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    overflow: hidden;
+}
+
+#title {
+    font-family: Bungee Inline;
+    font-size: 3rem;
+    margin-bottom: 1px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+#main-container {
+    display: flex;
+    height: 550px;
+    background-color: rgb(71, 0, 71);
+}
+
+#map-score-control {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 550px;
+    background-color: aquamarine;
+}
+
+#mapWrapper {
+    width: 200px;
+    height: 300px;
+}
+
+#county-map {
+    width: 125px;
+    height: 200px;
+}
+
 .leaflet-container {
-    width: 600px;
-    height: 600px;
+    width: 490px;
+    height: 490px;
+    border: 5px solid black;
+}
+
+#menuBar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 490px;
+    height : 40px;
+    border: 5px solid black;
+}
+
+.game-button {
+    font-family: Squada One;
+    font-size: 1.5rem;
+    width: 150px;
+    border: 2px solid rgb(255, 140, 255);;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+}
+
+.game-button:hover {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.game-button:disabled {
+    filter: invert(.75);
 }
