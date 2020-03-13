@@ -40,6 +40,24 @@ function GuessCounty(props) {
   );
 }
 
+function EndGameStatus(props) {
+    return (
+        <div id='end-game-status'>
+            <div id='address'>
+                <p className='end-game-text'>Town: {props.town}</p>
+                <p className='end-game-text'>County: {props.county}</p>
+                <p className='end-game-text'>Coordinates: {props.lat}/{props.lon}</p>
+            </div>
+            <div id='end-message'>
+                {props.win === true ? <h3 id='final-text'>You Win!!!!</h3> : <h3>Coward!!! Try Harder!!!</h3>}
+            </div>
+            <div id='end-score'>
+                <p className='end-game-text'>Final Score: {props.score}</p>
+            </div>
+        </div>
+    )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +76,7 @@ class App extends React.Component {
       count: 0,
       gameStarted: false,
       guess: false,
+      win: false
     };
   }
 
@@ -79,7 +98,10 @@ class App extends React.Component {
   };
 
   quit = () => {
-    console.log('Quit');
+    this.setState({
+        score: 'Quit!',
+        win: 'quit'
+    })
   };
 
   guessHandler = event => {
@@ -103,7 +125,8 @@ class App extends React.Component {
         },
         status: 'Right!',
         gameStarted: false,
-        guess: false
+        guess: false,
+        win: true
       });
     }
     this.setState({
@@ -230,6 +253,7 @@ class App extends React.Component {
           <div id='main-map-container'>
             <VTMap lat={this.state.mainMap.lat} lon={this.state.mainMap.lon} zoom={this.state.mainMap.zoom} mapCoords={this.state.mapCoords} count={this.state.count} />
             {this.state.guess === true ? <GuessCounty guessHandler={this.guessHandler} /> : null}
+            {this.state.win === true || this.state.win ==='quit' ? <EndGameStatus town={this.state.town} county={this.state.county} lat={this.state.mapCoords[0][0].toPrecision(4)} lon={this.state.mapCoords[0][1].toPrecision(4)} win={this.state.win} score={this.state.score} /> : null}
             <div id='menuBar'>
               <button className='game-button' disabled={this.state.gameStarted} onClick={this.start}>
                 Start!
