@@ -82,11 +82,11 @@ class App extends React.Component {
         console.log(this.state.county);
         console.log(event.target.textContent);
         if (event.target.textContent === 'Cancel') {
-            this.setState ({
+            this.setState({
                 guess: false
             })
-        } else if (event.target.textContent + ' County'!== this.state.county) {
-            this.setState ({
+        } else if (event.target.textContent + ' County' !== this.state.county) {
+            this.setState({
                 score: this.state.score - 10,
                 status: 'Wrong!'
             })
@@ -176,13 +176,13 @@ class App extends React.Component {
             .then(jsonObj => {
                 let town;
                 if (jsonObj.address.city) {
-                    town=jsonObj.address.city
+                    town = jsonObj.address.city
                 } else if (jsonObj.address.town) {
-                    town=jsonObj.address.town
+                    town = jsonObj.address.town
                 } else if (jsonObj.address.village) {
-                    town=jsonObj.address.village
+                    town = jsonObj.address.village
                 } else if (jsonObj.address.hamlet) {
-                    town=jsonObj.address.village
+                    town = jsonObj.address.village
                 }
                 console.log(town);
                 this.setState({
@@ -192,7 +192,7 @@ class App extends React.Component {
             });
     }
 
-    componentDidUpdate () {
+    componentDidUpdate() {
         console.log(this.state.countyGuess)
     }
 
@@ -202,26 +202,18 @@ class App extends React.Component {
                 <Header />
                 <div id='main-container'>
                     <div id='map-score-control'>
-                        <MapScore score={this.state.score}/>
+                        <MapScore score={this.state.score} />
                         <div id='directionBtns'>
-                            <button disabled={!this.state.gameStarted} onClick={this.goNorth}>
-                                North
-              </button>
-                            <button disabled={!this.state.gameStarted} onClick={this.goSouth}>
-                                South
-              </button>
-                            <button disabled={!this.state.gameStarted} onClick={this.goEast}>
-                                East
-              </button>
-                            <button disabled={!this.state.gameStarted} onClick={this.goWest}>
-                                West
-              </button>
+                            <button disabled={!this.state.gameStarted} onClick={this.goNorth}>North</button>
+                            <button disabled={!this.state.gameStarted} onClick={this.goSouth}>South</button>
+                            <button disabled={!this.state.gameStarted} onClick={this.goEast}>East</button>
+                            <button disabled={!this.state.gameStarted} onClick={this.goWest}>West</button>
                         </div>
                     </div>
 
                     <div id='main-map-container'>
                         <VTMap lat={this.state.mainMap.lat} lon={this.state.mainMap.lon} zoom={this.state.mainMap.zoom} mapCoords={this.state.mapCoords} count={this.state.count} />
-                        {this.state.guess === true ? <GuessCounty guessHandler = {this.guessHandler}/> : null}
+                        {this.state.guess === true ? <GuessCounty guessHandler={this.guessHandler} /> : null}
                         <div id='menuBar'>
                             <button className='game-button' disabled={this.state.gameStarted} onClick={this.start}>
                                 Start!
