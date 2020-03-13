@@ -13,7 +13,7 @@ class MapScore extends React.Component {
         return (
             <div>
                 <div id='score'>
-                    <p>Current Score: </p>
+                    <p>Current Score: {this.props.score}</p>
                 </div>
                 <div id='mapWrapper'>
                     <img id='county-map' src={counties} />

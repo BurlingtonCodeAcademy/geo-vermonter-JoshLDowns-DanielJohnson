@@ -33,7 +33,9 @@
 }
 
 #guess-list {
-    height: 465px;
+    background-color: rgb(255, 140, 255, .5);
+    height: 462px;
+    width: 160px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -44,6 +46,11 @@
     z-index: 1000;
     margin-left: auto;
     margin-right: auto;
+}
+
+.county-guess:hover {
+    color: rgb(0, 80, 0);
+    cursor: pointer;
 }
 
 #map-score-control {
