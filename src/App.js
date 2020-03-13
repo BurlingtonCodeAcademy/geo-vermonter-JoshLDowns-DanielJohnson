@@ -115,16 +115,16 @@ class App extends React.Component {
     let newLat = this.state.mapCoords[this.state.count][0] + 0.002;
     let currentCoords = this.state.mapCoords;
     currentCoords.push([newLat, this.state.mapCoords[this.state.count][1]]);
-    this.setState(prevState => ({
+    this.setState({
       mainMap: {
         lat: newLat,
-        lon: prevState.mapCoords[prevState.count][1],
+        lon: this.state.mapCoords[this.state.count][1],
         zoom: 18,
       },
       mapCoords: currentCoords,
-      score: prevState.score - 1,
-      count: prevState.count + 1,
-    }));
+      score: this.state.score - 1,
+      count: this.state.count + 1,
+    });
   };
 
   goSouth = () => {
@@ -210,28 +210,20 @@ class App extends React.Component {
             <MapScore score={this.state.score}/>
             <div id='directionBtns'>
               <div id='north-wrapper'>
-                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goNorth}>
-                  North
-                </button>
+                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goNorth}>North</button>
               </div>
 
               <div id='east-west-wrapper'>
-                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goEast}>
-                  East
-                </button>
-                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goWest}>
-                  West
-                </button>
+                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goWest}>West</button>
+                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goEast}>East</button>
               </div>
 
               <div id='south-wrapper'>
-                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goSouth}>
-                  South
-                </button>
+                <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goSouth}>South</button>
               </div>
             </div>
             <div id='status-bar'>
-              <p id='status'>Status</p>
+              <p id='status'>Status: {this.state.status}</p>
             </div>
           </div>
 

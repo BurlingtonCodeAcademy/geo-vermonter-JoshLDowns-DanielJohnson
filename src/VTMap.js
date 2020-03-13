@@ -20,17 +20,27 @@ class VTMap extends React.Component {
         }
     }
 
+    componentWillUpdate() {
+        console.log(this.state.mapCoords)
+        console.log(this.props.mapCoords)
+    }
+
+    componentDidUpdate() {
+        //console.log(this.state.mapCoords)
+        //console.log(this.props.mapCoords)
+    }
+
     componentDidMount() {
+        console.log(this.props.mapCoords)
         this.setState({
             mapCoords: this.props.mapCoords
         })
     }
 
     render() {
-        //console.log(this.state.mapCoords)
         let myLine = this.state.mapCoords.length > 1 ?<Polyline color="blue" positions={this.state.mapCoords} /> : null
         return (
-            <Map center={[this.props.lat, this.props.lon]} zoom={this.props.zoom} zoomControl={false} scrollWheelZoom={false} touchZoom={false} doubleClickZoom={false}>
+            <Map center={[this.props.lat, this.props.lon]} zoom={this.props.zoom} zoomControl={false} scrollWheelZoom={false} touchZoom={false} doubleClickZoom={false} dragging={false}>
                 <TileLayer
                     url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
                     attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -43,10 +53,5 @@ class VTMap extends React.Component {
     }
 
 }
-//<Line mapCoords={this.props.mapCoords}/>
-//function Line (props) {
-//    console.log(props.mapCoords)
-//    return props.mapCoords.length > 1 ? <Polyline color="blue" positions={props.mapCoords} /> : null
-//}
 
 export default VTMap;
