@@ -18,7 +18,7 @@ class MapScore extends React.Component {
             
                 
                 <div id='mapWrapper'>
-                    <img id='county-map' src={counties} />
+                    <img id='county-map' src={counties} alt='County Map of VT'/>
                 </div>
             </div>
         )
