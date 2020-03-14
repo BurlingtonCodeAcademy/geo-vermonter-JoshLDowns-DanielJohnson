@@ -1,3 +1,4 @@
+// -------- Imports for various components and map functions---------//
 import React from 'react';
 import VTMap from './VTMap';
 import Header from './Header';
@@ -7,26 +8,12 @@ import leafletPip from 'leaflet-pip';
 import borderData from './border';
 import './map.css';
 
-function ranLonLat() {
-  let lonLatAr = [];
-  let ranLon = -73.42613 + Math.random() * (-71.51023 - -73.42613);
-  let ranLat = 42.73032 + Math.random() * (45.00756 - 42.73032);
-  lonLatAr.push(ranLon);
-  lonLatAr.push(ranLat);
-  return lonLatAr;
-}
-
-let VT = L.geoJSON(borderData);
-let initialPoint = ranLonLat();
-let newPoint = leafletPip.pointInLayer(initialPoint, VT);
-while (newPoint.length === 0) {
-  initialPoint = ranLonLat();
-  newPoint = leafletPip.pointInLayer(initialPoint, VT);
-}
-
+// ---- functional components that are rendered conditionally in App class ---- //
+// ---- renders when player hits the guess prompt ---- //
 function GuessCounty(props) {
+  //array of counties to build the county list
   let countyList = ['Grand Isle', 'Franklin', 'Orleans', 'Essex', 'Chittenden', 'Lamoille', 'Caledonia', 'Washington', 'Addison', 'Orange', 'Rutland', 'Windsor', 'Bennington', 'Windham', 'Cancel'];
-
+  //returns an ordered list, all elements are created by mapping the county list into li elements
   return (
     <div id='guess-list'>
       <ol>
@@ -40,24 +27,28 @@ function GuessCounty(props) {
   );
 }
 
+//  ---- renders at end of game to display stats ---- //
 function EndGameStatus(props) {
-    return (
-        <div id='end-game-status'>
-            <div id='address'>
-                <p className='end-game-text'>Town: {props.town}</p>
-                <p className='end-game-text'>County: {props.county}</p>
-                <p className='end-game-text'>Coordinates: {props.lat}/{props.lon}</p>
-            </div>
-            <div id='end-message'>
-                {props.win === true ? <h3 id='final-text'>You Win!!!!</h3> : <h3>Coward!!! Try Harder!!!</h3>}
-            </div>
-            <div id='end-score'>
-                <p className='end-game-text'>Final Score: {props.score}</p>
-            </div>
-        </div>
-    )
+  //returns a bar that covers top portion of of map, with the correct address, player score, and end game status
+  return (
+    <div id='end-game-status'>
+      <div id='address'>
+        <p className='end-game-text'>Town: {props.town}</p>
+        <p className='end-game-text'>County: {props.county}</p>
+        <p className='end-game-text'>Coordinates: {props.lat}/{props.lon}</p>
+      </div>
+      <div id='end-message'>
+        {props.win === true ? <h3 id='final-text'>You Win!!!!</h3> : <h3>Coward!!! Try Harder!!!</h3>}
+      </div>
+      <div id='end-score'>
+        <p className='end-game-text'>Final Score: {props.score}</p>
+      </div>
+    </div>
+  )
 }
+// ---- End of conditionally rendered functional components ---- //
 
+// ---- React Class that handles all game logic, and renders all components ---- //
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -68,7 +59,7 @@ class App extends React.Component {
         lon: -72.5,
         zoom: 7,
       },
-      mapCoords: [[initialPoint[1], initialPoint[0]]],
+      mapCoords: [],
       county: '',
       town: '',
       score: 100,
@@ -80,33 +71,90 @@ class App extends React.Component {
     };
   }
 
+  // ---- Function that produces a random point within a rectangle that surrounds VT ---- //
+  ranLonLat = () => {
+    let lonLatAr = [];
+    let ranLon = -73.42613 + Math.random() * (-71.51023 - -73.42613);
+    let ranLat = 42.73032 + Math.random() * (45.00756 - 42.73032);
+    lonLatAr.push(ranLon);
+    lonLatAr.push(ranLat);
+    return lonLatAr;
+  }
+
+  // ---- Start button event handler ---- //
   start = () => {
-    this.setState({
-      mainMap: {
-        lat: this.state.mapCoords[0][0],
-        lon: this.state.mapCoords[0][1],
-        zoom: 18,
-      },
-      gameStarted: true,
-    });
+    //builds a representation of VT as a variable for use with Leaflet-Pip
+    let VT = L.geoJSON(borderData);
+
+    //sets random point to start game, and makes sure it is within the bounds of VT with Pip
+    let initialPoint = this.ranLonLat();
+    let newPoint = leafletPip.pointInLayer(initialPoint, VT);
+    while (newPoint.length === 0) {
+      initialPoint = this.ranLonLat();
+      newPoint = leafletPip.pointInLayer(initialPoint, VT);
+    }
+    //flips the array so it is in lat, lon format
+    let flippedPoint = [initialPoint[1], initialPoint[0]]
+    
+    //gets county and town of random point, and builds initial state for gameplay
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${initialPoint[1]}&lon=${initialPoint[0]}&format=json`)
+      .then(data => data.json())
+      .then(jsonObj => {
+        let town;
+        //determines type of town that the point is in, and sets it to town variable
+        if (jsonObj.address.city) {
+          town = jsonObj.address.city;
+        } else if (jsonObj.address.town) {
+          town = jsonObj.address.town;
+        } else if (jsonObj.address.village) {
+          town = jsonObj.address.village;
+        } else if (jsonObj.address.hamlet) {
+          town = jsonObj.address.village;
+        }
+
+        this.setState({
+          mainMap: {
+            lat: flippedPoint[0],
+            lon: flippedPoint[1],
+            zoom: 18,
+          },
+          mapCoords: this.state.mapCoords.concat([flippedPoint]),
+          county: jsonObj.address.county,
+          town: town,
+          gameStarted: true
+        });
+      });
   };
 
+  // ---- Guess Button event handler ---- //
   guess = () => {
+    //sets guess state to true, which triggers render of county list
     this.setState({
       guess: true,
     });
   };
 
+  // ---- Quit Button event handler ---- //
   quit = () => {
+    //sets various game states that control how the end game bar is rendered, and zooms map
+    //out slightly so that players can see the path they made
     this.setState({
-        score: 'Quit!',
-        win: 'quit'
+      mainMap: {
+        lat: this.state.mapCoords[0][0],
+        lon: this.state.mapCoords[0][1],
+        zoom: 15,
+      },
+      status: 'Quitter!',
+      gameStarted: false,
+      guess: false,
+      score: 'Quit!',
+      win: 'quit'
     })
   };
 
+  // ---- Guess Button event handler ---- //
   guessHandler = event => {
-    console.log(this.state.county);
-    console.log(event.target.textContent);
+    //conditional statement for game logic
     if (event.target.textContent === 'Cancel') {
       this.setState({
         guess: false,
@@ -117,11 +165,13 @@ class App extends React.Component {
         status: 'Wrong!',
       });
     } else {
+      //on win, sets various game states that control how the end game bar is rendered, and zooms map
+      //out slightly so that players can see the path they made
       this.setState({
         mainMap: {
-          lat: 43.9,
-          lon: -72.5,
-          zoom: 7,
+          lat: this.state.mapCoords[0][0],
+          lon: this.state.mapCoords[0][1],
+          zoom: 15,
         },
         status: 'Right!',
         gameStarted: false,
@@ -129,22 +179,21 @@ class App extends React.Component {
         win: true
       });
     }
-    this.setState({
-      countyGuess: event.target.textContent,
-    });
   };
 
+  // ---- Directional input event handlers ---- //
+  // -- want to refactor into one function, so it can be passed as prop -- //
   goNorth = () => {
     let newLat = this.state.mapCoords[this.state.count][0] + 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([newLat, this.state.mapCoords[this.state.count][1]]);
+    let newCoords = currentCoords.concat([[newLat, this.state.mapCoords[this.state.count][1]]]);
     this.setState({
       mainMap: {
         lat: newLat,
         lon: this.state.mapCoords[this.state.count][1],
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -153,14 +202,14 @@ class App extends React.Component {
   goSouth = () => {
     let newLat = this.state.mapCoords[this.state.count][0] - 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([newLat, this.state.mapCoords[this.state.count][1]]);
+    let newCoords = currentCoords.concat([[newLat, this.state.mapCoords[this.state.count][1]]])
     this.setState({
       mainMap: {
         lat: newLat,
         lon: this.state.mapCoords[this.state.count][1],
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -169,14 +218,14 @@ class App extends React.Component {
   goEast = () => {
     let newLon = this.state.mapCoords[this.state.count][1] + 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([this.state.mapCoords[this.state.count][0], newLon]);
+    let newCoords = currentCoords.concat([[this.state.mapCoords[this.state.count][0], newLon]])
     this.setState({
       mainMap: {
         lat: this.state.mapCoords[this.state.count][0],
         lon: newLon,
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -185,52 +234,27 @@ class App extends React.Component {
   goWest = () => {
     let newLon = this.state.mapCoords[this.state.count][1] - 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([this.state.mapCoords[this.state.count][0], newLon]);
+    let newCoords = currentCoords.concat([[this.state.mapCoords[this.state.count][0], newLon]])
     this.setState({
       mainMap: {
         lat: this.state.mapCoords[this.state.count][0],
         lon: newLon,
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
   };
 
-  componentDidMount() {
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${initialPoint[1]}&lon=${initialPoint[0]}&format=json`)
-      .then(data => data.json())
-      .then(jsonObj => {
-        let town;
-        if (jsonObj.address.city) {
-          town = jsonObj.address.city;
-        } else if (jsonObj.address.town) {
-          town = jsonObj.address.town;
-        } else if (jsonObj.address.village) {
-          town = jsonObj.address.village;
-        } else if (jsonObj.address.hamlet) {
-          town = jsonObj.address.village;
-        }
-        console.log(town);
-        this.setState({
-          county: jsonObj.address.county,
-          town: town,
-        });
-      });
-  }
-
-  componentDidUpdate() {
-    console.log(this.state.countyGuess);
-  }
-
+  // ---- Render method to build page ---- //
   render() {
     return (
       <div id='body'>
         <Header />
         <div id='main-container'>
           <div id='map-score-control'>
-            <MapScore score={this.state.score}/>
+            <MapScore score={this.state.score} />
             <div id='directionBtns'>
               <div id='north-wrapper'>
                 <button className='direction-button' disabled={!this.state.gameStarted} onClick={this.goNorth}>North</button>
@@ -252,8 +276,11 @@ class App extends React.Component {
 
           <div id='main-map-container'>
             <VTMap lat={this.state.mainMap.lat} lon={this.state.mainMap.lon} zoom={this.state.mainMap.zoom} mapCoords={this.state.mapCoords} count={this.state.count} />
+            {/*conditionally renders county list when guess state changes*/}
             {this.state.guess === true ? <GuessCounty guessHandler={this.guessHandler} /> : null}
-            {this.state.win === true || this.state.win ==='quit' ? <EndGameStatus town={this.state.town} county={this.state.county} lat={this.state.mapCoords[0][0].toPrecision(4)} lon={this.state.mapCoords[0][1].toPrecision(4)} win={this.state.win} score={this.state.score} /> : null}
+            {/*conditionally renders end game display when win state changes*/}
+            {this.state.win === true || this.state.win === 'quit' ? <EndGameStatus town={this.state.town} county={this.state.county.split(' ')[0]} lat={this.state.mapCoords[0][0].toPrecision(4)} lon={this.state.mapCoords[0][1].toPrecision(4)} win={this.state.win} score={this.state.score} /> : null}
+            {/*game menu buttons*/}
             <div id='menuBar'>
               <button className='game-button' disabled={this.state.gameStarted} onClick={this.start}>
                 Start!
