@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, Marker, Popup, TileLayer, Polygon, Polyline } from 'react-leaflet'
+import { Map, Marker, TileLayer, Polygon, Polyline } from 'react-leaflet'
 import borderData from './border'
 import './map.css'
 
@@ -20,25 +20,21 @@ class VTMap extends React.Component {
         }
     }
 
-    componentWillUpdate() {
-        console.log(this.state.mapCoords)
-        console.log(this.props.mapCoords)
-    }
-
     componentDidUpdate() {
-        //console.log(this.state.mapCoords)
-        //console.log(this.props.mapCoords)
+        if (this.state.mapCoords.length !== this.props.mapCoords.length){
+            this.setState({
+                mapCoords: this.props.mapCoords
+            })
+        }
     }
 
     componentDidMount() {
-        console.log(this.props.mapCoords)
         this.setState({
             mapCoords: this.props.mapCoords
         })
     }
 
     render() {
-        let myLine = this.state.mapCoords.length > 1 ?<Polyline color="blue" positions={this.state.mapCoords} /> : null
         return (
             <Map center={[this.props.lat, this.props.lon]} zoom={this.props.zoom} zoomControl={false} scrollWheelZoom={false} touchZoom={false} doubleClickZoom={false} dragging={false}>
                 <TileLayer
@@ -46,8 +42,8 @@ class VTMap extends React.Component {
                     attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                 />
                 <Marker position={this.props.mapCoords[this.props.count]} />
+                <Polyline color="red" dashArray="15 10" weight="8" positions={this.state.mapCoords} />
                 <Polygon color="purple" positions={latLongData} />
-                {myLine}
             </Map>
         )
     }

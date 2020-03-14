@@ -1,3 +1,4 @@
+// -------- Imports for various components ---------//
 import React from 'react';
 import VTMap from './VTMap';
 import Header from './Header';
@@ -99,8 +100,16 @@ class App extends React.Component {
 
   quit = () => {
     this.setState({
-        score: 'Quit!',
-        win: 'quit'
+      mainMap: {
+        lat: this.state.mapCoords[0][0],
+        lon: this.state.mapCoords[0][1],
+        zoom: 15,
+      },
+      status: 'Quitter!',
+      gameStarted: false,
+      guess: false,
+      score: 'Quit!',
+      win: 'quit'
     })
   };
 
@@ -119,9 +128,9 @@ class App extends React.Component {
     } else {
       this.setState({
         mainMap: {
-          lat: 43.9,
-          lon: -72.5,
-          zoom: 7,
+          lat: this.state.mapCoords[0][0],
+          lon: this.state.mapCoords[0][1],
+          zoom: 15,
         },
         status: 'Right!',
         gameStarted: false,
@@ -137,14 +146,15 @@ class App extends React.Component {
   goNorth = () => {
     let newLat = this.state.mapCoords[this.state.count][0] + 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([newLat, this.state.mapCoords[this.state.count][1]]);
+    let newCoords = currentCoords.concat([[newLat, this.state.mapCoords[this.state.count][1]]]);
+    console.log(newCoords)
     this.setState({
       mainMap: {
         lat: newLat,
         lon: this.state.mapCoords[this.state.count][1],
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -153,14 +163,14 @@ class App extends React.Component {
   goSouth = () => {
     let newLat = this.state.mapCoords[this.state.count][0] - 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([newLat, this.state.mapCoords[this.state.count][1]]);
+    let newCoords = currentCoords.concat([[newLat, this.state.mapCoords[this.state.count][1]]])
     this.setState({
       mainMap: {
         lat: newLat,
         lon: this.state.mapCoords[this.state.count][1],
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -169,14 +179,14 @@ class App extends React.Component {
   goEast = () => {
     let newLon = this.state.mapCoords[this.state.count][1] + 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([this.state.mapCoords[this.state.count][0], newLon]);
+    let newCoords = currentCoords.concat([[this.state.mapCoords[this.state.count][0], newLon]])
     this.setState({
       mainMap: {
         lat: this.state.mapCoords[this.state.count][0],
         lon: newLon,
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -185,14 +195,14 @@ class App extends React.Component {
   goWest = () => {
     let newLon = this.state.mapCoords[this.state.count][1] - 0.002;
     let currentCoords = this.state.mapCoords;
-    currentCoords.push([this.state.mapCoords[this.state.count][0], newLon]);
+    let newCoords= currentCoords.concat([[this.state.mapCoords[this.state.count][0], newLon]])
     this.setState({
       mainMap: {
         lat: this.state.mapCoords[this.state.count][0],
         lon: newLon,
         zoom: 18,
       },
-      mapCoords: currentCoords,
+      mapCoords: newCoords,
       score: this.state.score - 1,
       count: this.state.count + 1,
     });
@@ -218,10 +228,6 @@ class App extends React.Component {
           town: town,
         });
       });
-  }
-
-  componentDidUpdate() {
-    console.log(this.state.countyGuess);
   }
 
   render() {
@@ -253,7 +259,7 @@ class App extends React.Component {
           <div id='main-map-container'>
             <VTMap lat={this.state.mainMap.lat} lon={this.state.mainMap.lon} zoom={this.state.mainMap.zoom} mapCoords={this.state.mapCoords} count={this.state.count} />
             {this.state.guess === true ? <GuessCounty guessHandler={this.guessHandler} /> : null}
-            {this.state.win === true || this.state.win ==='quit' ? <EndGameStatus town={this.state.town} county={this.state.county} lat={this.state.mapCoords[0][0].toPrecision(4)} lon={this.state.mapCoords[0][1].toPrecision(4)} win={this.state.win} score={this.state.score} /> : null}
+            {this.state.win === true || this.state.win ==='quit' ? <EndGameStatus town={this.state.town} county={this.state.county.split(' ')[0]} lat={this.state.mapCoords[0][0].toPrecision(4)} lon={this.state.mapCoords[0][1].toPrecision(4)} win={this.state.win} score={this.state.score} /> : null}
             <div id='menuBar'>
               <button className='game-button' disabled={this.state.gameStarted} onClick={this.start}>
                 Start!
