@@ -1,0 +1,392 @@
+/* Font Import */
+@import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Squada+One&display=swap');
+
+/* Background Image Import */
+html {
+    background: url(../images/background.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 100%;
+    z-index: 0;
+}
+
+/* Main body formatting */
+#body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+}
+
+/* Header bar formatting */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 690px;
+    height: 50px;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+    text-shadow: -2px 0 2px black, 0 2px 2px black, 2px 0 2px black, 0 -2px 2px black;
+    border: 5px solid black;
+    overflow: hidden;
+}
+
+#title {
+    font-family: Bungee Inline;
+    font-size: 3rem;
+    margin-bottom: 1px;
+    margin-top: 0px;
+    margin-left: 115px;
+    padding: 0px;
+}
+
+/* Hamburger drop down button */
+#hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-right: 5px;
+    height: 30px;
+    width: 30px;
+    border: 5px solid rgb(255, 140, 255);
+    border-radius: 10px;
+}
+
+#hamburger:hover {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.hamBar {
+    width: 20px;
+    border: 1.5px solid rgb(255, 140, 255)
+}
+
+/* Main Container Layout */
+#main-container {
+    display: flex;
+    height: 550px;
+    background-color: rgb(71, 0, 71);
+}
+
+#main-map-container {
+    position: relative;
+}
+
+/* End of game modal window formatting */
+#end-game-status {
+    background-color:rgb(255, 140, 255, .5) ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+    justify-content: space-around;
+    width: Calc(100% - 10px);
+    height: 220px;
+}
+
+#address {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1rem;
+    width: 100%;
+}
+
+h3 {
+    margin: 0px;
+}
+
+.end-game-text{
+    font-family: squada one;
+    font-size: 1.1rem;
+    margin: 0px;
+}
+
+#end-message {
+    font-family: bungee inline;
+    font-size: 1.5rem;
+    align-self: center;
+}
+
+#end-score {
+    font-family: squada one;
+    font-size: 1.2rem;
+    align-self: center;
+}
+
+/* Score submit form formatting */
+#score-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    width: 100%;
+    height: 75px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 5px dashed black;
+}
+
+#name-form {
+    display: flex;
+    justify-content: space-around;
+    font-family: squada one;
+    font-size: 1.5rem;
+}
+
+#input-name {
+    width: 200px;
+    font-size: 1.3rem;
+    font-family: squada one;
+}
+
+/* County list modal window formatting*/
+#guess-list {
+    background-color: rgb(255, 140, 255, .5);
+    height: 462px;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-family: squada one;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0px;
+    z-index: 1000;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.county-guess:hover {
+    color: rgb(0, 80, 0);
+    cursor: pointer;
+}
+
+/* Leaderboard modal window formatting */
+#leader-board {
+    background-color:rgb(255, 140, 255, .5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+    justify-content: space-around;
+    width: Calc(100% - 10px);
+    height: 490px;
+    font-family: squada one;
+    text-align: justify;
+    font-size: 1.5rem;
+}
+
+#leader-list-wrapper {
+    height: 400px;
+    overflow: hidden;
+    width: 100%;
+}
+
+#scrollable-leaders {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+    height: 400px;
+    overflow: auto;
+    width: 100%;
+}
+
+/* Directions modal window formatting */
+#instructions {
+    background-color:rgb(255, 140, 255, .5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+    justify-content: space-around;
+    width: Calc(100% - 35px);
+    height: 490px;
+    font-family: squada one;
+    text-align: justify;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+/* Game menu modal window formatting */
+#game-menu {
+    background-color:rgb(255, 140, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1001;
+    width: 150px;
+    height: 80px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: squada one;
+    font-size: 1.5em;
+    width: 100%;
+    height:35px;
+    border-bottom: 5px solid black;
+}
+
+.menu-item:hover {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.menu-text {
+    pointer-events: none;
+}
+
+/* Sidebar formatting*/
+#map-score-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 190px;
+    height: 540px;
+    background-color: rgb(71, 0, 71);
+    border: 5px solid black;
+}
+
+#score-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+}
+
+#score {
+    display: flex;
+    align-items: center;
+    height: 45px;
+    font-family: Squada One;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    border-bottom: 5px solid black;
+    border-top: 5px solid black;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+    text-shadow: -2px 0 2px black, 0 2px 2px black, 2px 0 2px black, 0 -2px 2px black;
+}
+
+#mapWrapper {
+    width: 190px;
+    height: 300px;
+    padding-top: 20px;
+}
+
+#county-map {
+    width: Calc(100% - 20px);
+    height: auto;
+    margin-left: 10px;
+}
+
+#north-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#east-west-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+#south-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.direction-button {
+    font-family: Squada One;
+    width: 70px;
+    font-size: 1.5rem;
+    border: 2px solid rgb(255, 140, 255);;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+}
+
+.direction-button:hover {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.direction-button:disabled {
+    filter: invert(.75);
+}
+
+#status-bar {
+    display: flex;
+    align-items: center;
+    height: 45px;
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+    margin-top: 15px;
+    background-color: rgb(0, 80, 0);
+}
+
+#status {
+    font-family: Squada One;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    color: rgb(255, 140, 255);
+    text-shadow: -2px 0 2px black, 0 2px 2px black, 2px 0 2px black, 0 -2px 2px black
+}
+
+/* Map container */
+.leaflet-container {
+    width: 490px;
+    height: 490px;
+    border: 5px solid black;
+}
+
+/* Main game button bar formatting */
+#menuBar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 490px;
+    height : 40px;
+    border: 5px solid black;
+}
+
+/* Button formatting */
+.game-button {
+    font-family: Squada One;
+    font-size: 1.5rem;
+    width: 150px;
+    border: 2px solid rgb(255, 140, 255);;
+    color: rgb(255, 140, 255);
+    background-color: rgb(0, 80, 0);
+}
+
+.game-button:hover {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+.game-button:disabled {
+    filter: invert(.75);
+}

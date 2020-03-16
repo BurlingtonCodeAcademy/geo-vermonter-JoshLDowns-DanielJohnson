@@ -2,7 +2,6 @@
 import React from 'react'
 import { Map, TileLayer, Polygon, Polyline } from 'react-leaflet'
 import borderData from './border'
-import './map.css'
 
 // ---- flips coordinate data from geoJSON object for use in react-leaflet ---- //
 const latLongData = borderData.geometry.coordinates[0].map((coord) => {
